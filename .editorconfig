@@ -1,0 +1,44 @@
+# EditorConfig is awesome: http://editorconfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+# Windows line breaks
+end_of_line = crlf
+# newline ending every file
+insert_final_newline = true
+# remove all trailing whitespace
+trim_trailing_whitespace = true
+# tab indentation
+indent_style = tab
+# default charset
+charset = utf-8-bom
+
+[*.{csproj,sqlproj}]
+# no newline ending project file
+insert_final_newline = false
+
+[*.{xml,csproj,sqlproj,config,user,pubxml}]
+indent_style = space
+indent_size = 2
+
+[*.js]
+indent_style = space
+indent_size = 4
+
+[*.yml]
+indent_style = space
+indent_size = 2
+charset = utf-8
+
+[Database/Tables/*.sql]
+indent_style = space
+indent_size = 4
+
+[Database/Types/*.sql]
+indent_style = space
+indent_size = 4
+
+[*.svcmap]
+insert_final_newline = false
