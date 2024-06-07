@@ -1,15 +1,16 @@
 ﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Test Project</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="/Content/css/site.css" />
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
 <body>
 	<asp:ContentPlaceHolder ID="Body" runat="server" />
-	<%	Html.RenderPartial( "~/Views/Shared/Icons.ascx" ); %>
+	<%--<%	Html.RenderPartial( "~/Views/Shared/Icons.ascx" ); %>--%>
 </body>
 </html>

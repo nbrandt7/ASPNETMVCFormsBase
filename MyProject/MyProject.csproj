@@ -138,6 +138,7 @@
   <ItemGroup>
     <Content Include="Content\css\site.css" />
     <Content Include="Views\Page\FooBar.aspx" />
+    <Content Include="Views\Page\Test.aspx" />
     <Content Include="Views\Page\Home.aspx" />
     <Content Include="Views\Page\MyPartial.ascx" />
     <Content Include="Views\Shared\Icons.ascx" />

@@ -6,7 +6,7 @@ namespace MyProject.Controllers {
 	public partial class PageController : Controller {
 		[HttpGet]
 		public ActionResult Home() {
-			return View( "~/Views/Page/Home.aspx" );
+			return View();
 		}
 
 
@@ -19,6 +19,11 @@ namespace MyProject.Controllers {
 				Date = DateTime.Now
 			};
 			return View( "~/Views/Page/FooBar.aspx", model );
+		}
+
+		[HttpGet]
+		public ActionResult RenderPage( string filename ) {
+			return View( "~/Views/Page/" + filename + ".aspx" );
 		}
 
 		[ChildActionOnly]
