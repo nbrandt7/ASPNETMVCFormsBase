@@ -137,10 +137,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\site.css" />
-    <Content Include="Views\Page\FooBar.aspx" />
-    <Content Include="Views\Page\Test.aspx" />
-    <Content Include="Views\Page\Home.aspx" />
+    <Content Include="Views\Page\foo-bar\Index.aspx" />
+    <Content Include="Views\Page\Gameboard.aspx" />
+    <Content Include="Views\Page\Index.aspx" />
     <Content Include="Views\Page\MyPartial.ascx" />
+    <Content Include="Views\Page\recent-posts\Index.aspx" />
+    <Content Include="Views\Page\recent-posts\[id]\Index.aspx" />
     <Content Include="Views\Shared\Icons.ascx" />
     <Content Include="Views\Shared\site.Master" />
     <Content Include="Views\Web.config" />

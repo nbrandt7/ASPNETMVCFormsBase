@@ -8,27 +8,9 @@ namespace MyProject {
 		public static void RegisterRoutes( RouteCollection routes ) {
 			// Ignore the axd routes
 			routes.IgnoreRoute( "{resource}.axd/{*pathInfo}" );
-
-			// Route for the Home page
-			routes.MapRoute(
-				name: "Home",
-				url: "",
-				defaults: new { controller = "Page", action = "Home", id = UrlParameter.Optional }
-			);
-
-			// Custom route to handle pages by filename
-			routes.MapPageRoute(
-				"PagesRoute",
-				"{filename}",
-				"~/Views/Page/{filename}.aspx"
-			);
-
-			// Default route
-			routes.MapRoute(
-				name: "Default",
-				url: "find/{controller}/{action}/{id}",
-				defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-			);
+			routes.MapRoute( "Find", "find/{controller}/{action}/{id}", new { controller = "", action = "", id = UrlParameter.Optional } );
+			// Pages route to handle dynamic page rendering
+			routes.MapRoute("Pages", "{*path}", new { controller = "Page", action = "RenderPage" });
 		}
 
 		protected void Application_Start() {
