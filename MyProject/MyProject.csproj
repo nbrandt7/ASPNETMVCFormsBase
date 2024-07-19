@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -26,6 +27,8 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +44,12 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=2.3.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
@@ -128,26 +137,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\202406120204069_InitialCreate.cs" />
+    <Compile Include="Migrations\202406120204069_InitialCreate.designer.cs">
+      <DependentUpon>202406120204069_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Core\%40Core\Controllers-FrontEnd\MapController.cs" />
     <Compile Include="_Core\%40Core\Controllers-FrontEnd\PageController.cs" />
     <Compile Include="_Core\%40Core\Models\Models-Base\_ViewModels\DemoModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="_Core\%40Core\Models\Posts\PhotoLocation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\site.css" />
-    <Content Include="Views\Page\foo-bar\Index.aspx" />
+    <Content Include="Content\css\global\main.css" />
+    <Content Include="Views\Page\account\Index.aspx" />
     <Content Include="Views\Page\Gameboard.aspx" />
     <Content Include="Views\Page\Index.aspx" />
     <Content Include="Views\Page\MyPartial.ascx" />
     <Content Include="Views\Page\recent-posts\Index.aspx" />
     <Content Include="Views\Page\recent-posts\[id]\Index.aspx" />
+    <Content Include="Views\Shared\Header.ascx" />
+    <Content Include="Views\Shared\Footer.ascx" />
     <Content Include="Views\Shared\Icons.ascx" />
     <Content Include="Views\Shared\site.Master" />
     <Content Include="Views\Web.config" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Content\css\global\main.scss" />
+    <Content Include="Content\css\global\_colors.scss" />
+    <Content Include="Content\css\global\_fonts.scss" />
+    <Content Include="Content\css\global\_mixins.scss" />
+    <Content Include="Content\css\global\_normalize.scss" />
+    <Content Include="Content\css\global\_tokens.scss" />
+    <Content Include="Content\css\layouts\_sections.scss" />
     <None Include="packages.config" />
     <Content Include="robots.txt" />
     <Content Include="Web.config">
@@ -155,8 +180,18 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\css\components\" />
+    <Folder Include="Content\css\global\helpers\" />
+    <Folder Include="Content\css\global\utilities\" />
+    <Folder Include="Content\css\pages\" />
+    <Folder Include="Content\css\vendors\" />
     <Folder Include="Content\images\" />
     <Folder Include="Content\js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202406120204069_InitialCreate.resx">
+      <DependentUpon>202406120204069_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -177,4 +212,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
 </Project>

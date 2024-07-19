@@ -1,0 +1,57 @@
+﻿.flow {
+	@include flow;
+}
+
+.site-wrapper {
+	@include wrapper;
+}
+
+.padding-x {
+	@include padding-x;
+}
+
+.padding-y {
+	@include padding-y;
+}
+
+.center-content {
+	@include center-content;
+}
+
+.split-section {
+	--col-count: 2;
+	display: grid;
+	grid-template-columns: repeat(var(--col-count), 1fr);
+	max-width: $site-max-width;
+	margin-inline: auto;
+
+	> .text-wrap {
+		@include wrapper;
+		@include padding-y;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		order: 0;
+	}
+
+	> .img-wrap {
+		position: relative;
+		min-height: auto-clamp(300px, 500px);
+		isolation: isolate;
+
+		&[class*="left"] {
+			order: -1;
+		}
+
+		&[class*="right"] {
+			order: 1;
+		}
+
+		img {
+			@include absolute-fill;
+			object-fit: cover;
+			object-position: center;
+			z-index: -1;
+		}
+	}
+}

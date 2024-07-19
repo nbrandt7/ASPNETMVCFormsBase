@@ -1,0 +1,64 @@
+//Variables & Mixins
+@import "normalize";
+@import "fonts";
+@import "colors";
+@import "tokens";
+@import "mixins";
+
+//Common Styles
+@import "typography";
+@import "../layouts/header";
+@import "../layouts/sections";
+@import "../layouts/footer";
+
+:root {
+	--padding-x: #{auto-clamp($padding-x-min, $padding-x-max)};
+	--padding-y: #{auto-clamp($padding-y-min, $padding-y-max)};
+	--site-header-height: 90px;
+	--site-background-color: #{$site-background-color};
+	--site-text-color: #{$site-text-color};
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	scroll-behavior: smooth;
+	@include scrollbars(10px, $scrollbar-thumb-color, $scrollbar-track-color);
+
+	&.scroll-lock {
+		overscroll-behavior-y: contain;
+		overflow: hidden;
+
+		body {
+			overscroll-behavior-y: contain;
+		}
+	}
+
+	body {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		min-height: 100%;
+		font-family: $font;
+		font-size: $site-font-size;
+		letter-spacing: $site-letter-spacing;
+		line-height: $site-line-height;
+		color: $site-text-color;
+		background-color: $site-background-color;
+		margin: 0;
+		padding: 0;
+
+		main {
+			margin-inline: auto;
+			width: 100%;
+			flex-grow: 1;
+		}
+	}
+}

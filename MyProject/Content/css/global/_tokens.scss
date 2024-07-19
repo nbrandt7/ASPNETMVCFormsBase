@@ -1,0 +1,54 @@
+//Default site spacing and limits
+$site-min-width: 350px;
+$site-max-width: 2560px;
+$padding-x-min: 20px;
+$padding-x-max: 180px;
+$padding-y-min: 40px;
+$padding-y-max: 90px;
+
+//z-index values
+$site-header-index: 1000;
+$site-popup-index: $site-header-index + 1;
+
+//Scrollbar
+$scrollbar-thumb-color: $accent-100;
+$scrollbar-track-color: $dark-100;
+
+//Site colors
+$site-background-color: $dark-100;
+$site-text-color: $w;
+
+//Site font
+$site-font-size: 18px;
+$site-letter-spacing: 0.08em;
+$site-line-height: 1.6;
+
+//Site timings
+$timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+$timings: (
+	"fast": 0.2s,
+	"norm": 0.4s,
+	"slow": 0.8s,
+);
+
+$headings: (h1, h2, h3, h4, h5, h6);
+
+$margin-bottom-spacing-values: (
+	h1: 0.272em,
+	"h1:has(+h2)": 0.132em,
+	h2: 0.128em,
+	"h2:has(+h3)": 0.132em,
+	h3: 0.272em,
+	"h3:has(+h4)": 0.132em,
+	h4: 0.27em,
+	"h4:has(+h5)": 0.132em,
+	h5: 0.27em,
+	p: 1.4em,
+	"p:has(+p)": 1.1em,
+	"p:has(+h1)": 3.3em,
+	"p:has(+h2)": 3.3em,
+	"p:has(+h3)": 3.3em,
+	"p:has(+h4)": 3.3em,
+	"p:has(+h5)": 3.3em,
+	li: 0.7em,
+);

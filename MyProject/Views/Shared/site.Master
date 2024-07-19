@@ -4,13 +4,26 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Test Project</title>
+	<title><asp:ContentPlaceHolder ID="Meta_Title" runat="server"/></title>
+	<asp:ContentPlaceHolder ID="Meta_Description" runat="server"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="/Content/css/site.css" />
+	<link rel="stylesheet" href="/Content/css/global/main.css" />
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
 <body>
-	<asp:ContentPlaceHolder ID="Body" runat="server" />
-	<%--<%	Html.RenderPartial( "~/Views/Shared/Icons.ascx" ); %>--%>
+	<%--Site Header--%>
+	<%	Html.RenderPartial( "~/Views/Shared/Header.ascx" ); %>
+	<div class="site-header-placeholder"></div>
+
+	<%--Site Main--%>
+	<main class="site-main js-site-main">
+		<asp:ContentPlaceHolder ID="Body" runat="server" />
+	</main>
+
+	<%--Site Footer--%>
+	<%	Html.RenderPartial( "~/Views/Shared/Footer.ascx" ); %>
+
+	<%	Html.RenderPartial( "~/Views/Shared/Icons.ascx" ); %>
+	<asp:ContentPlaceHolder ID="EOB_Javascript" runat="server" />
 </body>
 </html>

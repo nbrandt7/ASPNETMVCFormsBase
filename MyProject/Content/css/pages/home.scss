@@ -1,0 +1,19 @@
+@import "../global/_imports";
+
+.hero-section {
+	.border-container {
+		display: flex;
+		flex-direction: column;
+		background-color: $tertiary-100;
+		border-radius: 9px;
+		padding: 20px;
+		min-height: 800px;
+	}
+
+	#map {
+		flex-grow: 1;
+		border-radius: 9px;
+		height: 100%;
+		width: 100%;
+	}
+}

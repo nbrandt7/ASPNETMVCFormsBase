@@ -1,0 +1,41 @@
+footer.site-footer {
+	.main-footer {
+		display: flex;
+		flex-direction: column;
+		gap: 2em;
+
+		.site-logo {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: fit-content;
+			margin-inline: auto;
+
+			svg {
+				color: $w;
+			}
+		}
+
+		.footer-nav {
+			.footer-nav-list {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 3em;
+				margin: 0;
+				padding: 0;
+
+				li {
+					margin: 0;
+					padding: 0;
+					list-style: none;
+
+					a {
+						color: $w;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+	}
+}

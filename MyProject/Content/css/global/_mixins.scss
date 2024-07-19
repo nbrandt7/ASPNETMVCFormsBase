@@ -1,0 +1,335 @@
+@import "tokens";
+
+//Calculate from px to vw
+@function vwCalc($size) {
+	$vw: $size / 20px;
+	@return $vw * 1vw;
+}
+
+//Auto calculator clamp based on min and max sizes in px
+@function to-rem($value, $site-font-size) {
+	@return $value / $site-font-size;
+}
+
+@function auto-clamp(
+	$min-value,
+	$max-value,
+	$min-width: $site-min-width,
+	$max-width: $site-max-width
+) {
+	$min-value: to-rem($min-value, $site-font-size);
+	$max-value: to-rem($max-value, $site-font-size);
+	$min-view: to-rem($min-width, $site-font-size);
+	$max-view: to-rem($max-width, $site-font-size);
+
+	$range: ($max-value - $min-value) / ($max-view - $min-view);
+	$offset: $min-value - $min-view * $range;
+	$range: $range * 100;
+
+	@return unquote(
+		"clamp(#{$min-value}rem, #{$offset}rem + #{$range}vw, #{$max-value}rem)"
+	);
+}
+
+//Site Wrapper for sections
+@mixin wrapper($display: block) {
+	display: $display;
+	position: relative;
+	margin: 0 auto;
+	width: Min(100%, $site-max-width);
+}
+
+@mixin padding-y() {
+	padding-block: auto-clamp($padding-y-min, $padding-y-max);
+}
+
+@mixin padding-x() {
+	padding-inline: auto-clamp($padding-x-min, $padding-x-max);
+}
+
+//Letter spacing (parameter is in photoshops units)
+@function ls($value) {
+	@return $value / 1000 * 1em;
+}
+
+//Font faces
+@mixin font-faces($font-styles, $font-path) {
+	@each $font-name, $font-data in $font-styles {
+		$font-family: map-get($font-data, name);
+		$font-weights: map-get($font-data, font-weights);
+
+		@each $style, $weight in $font-weights {
+			$font-face: unquote("#{$font-name}-#{$style}");
+			$font-style: if($weight == "italic", "italic", "normal");
+
+			@font-face {
+				font-family: "#{$font-family}";
+				font-style: $font-style;
+				font-display: swap;
+
+				// Create an empty src property to add the different formats
+				src: "";
+			}
+
+			$font-formats: (
+				woff2: "woff2",
+				woff: "woff",
+				ttf: "truetype",
+			);
+
+			@each $format, $format-name in $font-formats {
+				$font-file: "#{$font-path}#{$font-face}.#{$format}";
+
+				// Check if the font file exists before adding it to src
+				@if file-exists($font-file) {
+					// Append the format to the src property
+					@at-root {
+						@font-face {
+							font-family: "#{$font-family}";
+							font-weight: $weight;
+							font-style: $font-style;
+							font-display: swap;
+							src: append(
+								src,
+								unquote('url("#{$font-file}") format("#{$format-name}"), '),
+								comma
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+//Basic properties of a pseudo element
+@mixin pseudo($display: block, $pos: absolute, $content: "") {
+	content: $content;
+	display: $display;
+	position: $pos;
+}
+
+//Fill a parent with an absolutely positioned element
+@mixin absolute-fill() {
+	position: absolute;
+	inset: 0 0;
+	height: 100%;
+	width: 100%;
+}
+
+//Center an absolute positioned element
+@mixin absolute-center() {
+	position: absolute;
+	inset: 50% 50%;
+	translate: -50% -50%;
+}
+
+/// Absoulte center on x-axis.
+@mixin absolute-center-x() {
+	position: absolute;
+	transform: translateX(-50%);
+	left: 50%;
+}
+
+/// Absoulte center on y-axis.
+@mixin absolute-center-y() {
+	position: absolute;
+	transform: translateY(-50%);
+	top: 50%;
+}
+
+//For spacing apart icons/text
+@mixin icon-text($gap, $justify: center) {
+	display: flex;
+	align-items: center;
+	justify-content: $justify;
+	gap: $gap;
+}
+
+@mixin cluster($gap, $justify: flex-start, $align: flex-start) {
+	display: flex;
+	align-items: $align;
+	justify-content: $justify;
+	gap: $gap;
+}
+
+/// Plus sign CSS for content-toggle mixin below.
+@mixin plus-sign($dir) {
+	display: block;
+	position: relative;
+	padding-#{$dir}: 20px;
+
+	&::before,
+	&::after {
+		content: "";
+		@include absolute-center-y;
+		#{$dir}: 0;
+		background: var(--toggle-plus-color);
+		width: 12px;
+		height: 4px;
+		transition: all 0.5s ease;
+		display: block;
+		z-index: 2;
+	}
+
+	&::before {
+		transform: translateY(-50%) rotate(90deg);
+	}
+}
+
+/// Plus sign for toggle-able content. E.g. FAQs, etc. Element invoking
+/// the mixin should be the toggle that hides and shows the content.
+///
+/// Default behavior will target a child with the class of
+/// "plus-sign" for positioning of plus sign. Set $target-child
+/// to FALSE to place it on the element invoking the mixing.
+@mixin content-toggle($dir: left, $target-child: TRUE) {
+	cursor: pointer;
+
+	@if $target-child ==FALSE {
+		@include plus-sign($dir);
+
+		&.active {
+			&::before {
+				transform: translateY(-50%);
+			}
+		}
+	} @else {
+		.plus-sign {
+			@include plus-sign($dir);
+		}
+
+		&.active {
+			.plus-sign {
+				&::before {
+					transform: translateY(-50%);
+				}
+			}
+		}
+	}
+}
+
+/// Viewport width when needed styles take effect for content that is toggle-able on mobile only.
+@mixin toggle-mobile-only($vw-max, $display) {
+	$vw-min: $vw-max + 1;
+
+	// Prevent toggling on desktop viewports
+	.js-toggle {
+		@media screen and (min-width: $vw-min) {
+			pointer-events: none !important;
+
+			// just in case a link is inside the toggle, even though there shouldn't be...
+			a {
+				pointer-events: all;
+			}
+		}
+	}
+
+	// Override inline height from JS slide toggle animation for desktop
+	.js-content {
+		@media screen and (min-width: $vw-min) {
+			height: auto !important;
+		}
+	}
+}
+
+/// Reset default browsers styles for <button> elements.
+@mixin button-reset() {
+	appearance: none;
+	line-height: 1;
+	color: inherit;
+	background: none;
+	box-sizing: border-box;
+	font-size: inherit;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	border: none;
+	box-shadow: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+
+	&:focus-visible {
+		outline: auto;
+	}
+}
+
+@mixin flow() {
+	@each $selector, $value in $margin-bottom-spacing-values {
+		#{$selector} {
+			margin-block: 0px $value;
+		}
+	}
+
+	*:not(div:not(.btn-container)):not(section):last-child {
+		margin-block: 0;
+	}
+}
+
+//Animation speed (fast, norm, slow)
+@mixin animate($speed, $property: all) {
+	@if $speed == "fast" {
+		// 0.2 seconds
+		transition: $property map-get($timings, "fast") $timing-function;
+		transition-delay: 0.05s;
+	} @else if $speed == "norm" {
+		// 0.5 seconds
+		transition: $property map-get($timings, "norm") $timing-function;
+		transition-delay: 0.05s;
+	} @else if $speed == "slow" {
+		// 2 seconds
+		transition: $property map-get($timings, "slow") $timing-function;
+		transition-delay: 0.05s;
+	} @else {
+		transition: $property $speed $timing-function;
+		transition-delay: 0.05s;
+	}
+}
+
+@mixin interact() {
+	@media screen and (hover: hover) {
+		&:hover,
+		&:focus-visible {
+			@content;
+		}
+	}
+}
+
+@mixin center-content() {
+	text-align: center;
+
+	ul {
+		width: fit-content;
+		margin-inline: auto;
+	}
+}
+
+//Customize scrollbar styling for Chrome, Edge, and Firefox
+@mixin scrollbars(
+	$size,
+	$foreground-color,
+	$background-color: mix($foreground-color, white, 50%)
+) {
+	// For Google Chrome
+	&::-webkit-scrollbar {
+		width: $size;
+		height: $size;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: $foreground-color;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: $background-color;
+	}
+
+	// For Internet Explorer
+	& {
+		scrollbar-face-color: $foreground-color;
+		scrollbar-track-color: $background-color;
+	}
+
+	scrollbar-color: $foreground-color $background-color;
+	scrollbar-width: thin;
+}
